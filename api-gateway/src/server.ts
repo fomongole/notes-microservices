@@ -16,10 +16,6 @@ app.get('/health', (req, res) => {
     res.status(200).json({ status: 'OK', service: 'API Gateway' });
 });
 
-// -------------------------------------------------------
-// PROXY RULES
-// -------------------------------------------------------
-
 // 1. Auth: Incoming '/api/auth/register' -> Express strips '/api/auth' -> Proxy sees '/register'
 //    Rewrite adds '/auth' back -> Final: 'http://localhost:3001/auth/register'
 app.use('/api/auth', createProxyMiddleware({
@@ -32,7 +28,7 @@ app.use('/api/auth', createProxyMiddleware({
 
 // 2. User: Incoming '/api/users/me' -> Express strips '/api/users' -> Proxy sees '/me'
 //    Rewrite adds '/users' back -> Final: 'http://localhost:3002/users/me'
-//    (Note: This matches your User Service app.use('/users', ...) setup)
+//    (This matches the User Service app.use('/users', ...) setup)
 app.use('/api/users', createProxyMiddleware({
     target: USER_SERVICE_URL,
     changeOrigin: true,
@@ -56,7 +52,7 @@ app.use(errorHandler);
 
 app.listen(PORT, () => {
     console.log(`🚀 API Gateway running on http://localhost:${PORT}`);
-    console.log(`👉 Auth Proxy: ${AUTH_SERVICE_URL}`);
-    console.log(`👉 User Proxy: ${USER_SERVICE_URL}`);
-    console.log(`👉 Notes Proxy: ${NOTES_SERVICE_URL}`);
+    console.log(`Auth Proxy: ${AUTH_SERVICE_URL}`);
+    console.log(`User Proxy: ${USER_SERVICE_URL}`);
+    console.log(`Notes Proxy: ${NOTES_SERVICE_URL}`);
 });
