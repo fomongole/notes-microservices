@@ -33,7 +33,6 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
         } catch (microserviceError: any) {
             // ROLLBACK
             await User.findByIdAndDelete(newUser._id);
-            // Here we DO throw a specific error because this is a specific logic failure
             throw new AppError('Failed to create user profile. Please check server logs.', 500);
         }
 
