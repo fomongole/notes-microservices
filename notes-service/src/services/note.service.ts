@@ -12,13 +12,12 @@ export const createNote = async (userId: string, noteData: any) => {
 };
 
 export const getNotes = async (userId: string, query: any) => {
-    // 1. Build the "Where" clause dynamically
     const where: Prisma.NoteWhereInput = {
         author: userId,
-        isArchived: query.isArchived === 'true' // defaults to false if undefined
+        isArchived: query.isArchived === 'true'
     };
 
-    // Filter by Tag (Postgres Array containment)
+    // 1. Filter by Tag
     if (query.tag) {
         where.tags = {
             has: query.tag
